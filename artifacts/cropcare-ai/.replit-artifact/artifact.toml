@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "CropCare AI"
+description = "A crop health companion that lets growers upload plant photos, review AI-assisted screening guidance, and track diagnosis history."
+version = "1.0.0"
+id = "artifacts/cropcare-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20129
+
+[services.development]
+run = "pnpm --filter @workspace/cropcare-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/cropcare-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/cropcare-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20129"
+BASE_PATH = "/"

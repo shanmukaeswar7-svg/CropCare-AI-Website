@@ -1,0 +1,2003 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CropCare AI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #f5f8f3;
+      color: #17251a;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+
+    .navbar {
+      height: 70px;
+      background: white;
+      border-bottom: 1px solid #e4e9e3;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 21px;
+      font-weight: 800;
+      color: #276936;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: #e4f2e5;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav-links button {
+      border: none;
+      background: transparent;
+      padding: 10px 15px;
+      border-radius: 10px;
+      color: #58615a;
+      font-weight: 600;
+    }
+
+    .nav-links button:hover,
+    .nav-links button.active {
+      background: #e7f3e8;
+      color: #276936;
+    }
+
+    /* HERO */
+
+    .hero {
+      background: linear-gradient(135deg, #194d27, #347c42);
+      color: white;
+      padding: 90px 7%;
+    }
+
+    .hero-content {
+      max-width: 1150px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 70px);
+      line-height: 1.03;
+      margin-bottom: 25px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #e3f0e4;
+      max-width: 620px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      background: #2d743a;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #225d2d;
+      transform: translateY(-1px);
+    }
+
+    .hero .btn-primary {
+      background: white;
+      color: #245f30;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #344038;
+      border: 1px solid #dfe5df;
+    }
+
+    .hero .btn-secondary {
+      background: rgba(255,255,255,.12);
+      color: white;
+      border-color: rgba(255,255,255,.25);
+    }
+
+    .preview-card {
+      background: white;
+      color: #17251a;
+      border-radius: 28px;
+      padding: 25px;
+      box-shadow: 0 25px 60px rgba(0,0,0,.18);
+    }
+
+    .plant-image {
+      height: 230px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #dff0df, #f7f4d8);
+      display: grid;
+      place-items: center;
+      font-size: 100px;
+      margin: 20px 0;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      padding: 7px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .badge-green {
+      background: #e3f3e5;
+      color: #286936;
+    }
+
+    .badge-yellow {
+      background: #fff1c7;
+      color: #8a6100;
+    }
+
+    .badge-red {
+      background: #fee5e5;
+      color: #a52828;
+    }
+
+    .badge-gray {
+      background: #edf0ed;
+      color: #626962;
+    }
+
+    /* GENERAL */
+
+    .container {
+      max-width: 1150px;
+      margin: auto;
+      padding: 75px 25px;
+    }
+
+    .eyebrow {
+      color: #2d743a;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .section-title {
+      font-size: 38px;
+      margin-top: 8px;
+    }
+
+    .section-subtitle {
+      margin-top: 12px;
+      color: #667067;
+      line-height: 1.7;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e3e8e3;
+      border-radius: 22px;
+      padding: 25px;
+      box-shadow: 0 5px 18px rgba(0,0,0,.035);
+    }
+
+    .feature-icon {
+      font-size: 32px;
+    }
+
+    .card h3 {
+      margin-top: 15px;
+      font-size: 19px;
+    }
+
+    .card p {
+      color: #697269;
+      line-height: 1.7;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    /* PAGES */
+
+    .page {
+      display: none;
+      min-height: calc(100vh - 70px);
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* DIAGNOSE */
+
+    .diagnose-layout {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 25px;
+      margin-top: 35px;
+    }
+
+    .upload-area {
+      min-height: 380px;
+      border: 2px dashed #cbd7cb;
+      border-radius: 24px;
+      background: #fafcf9;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .upload-icon {
+      width: 75px;
+      height: 75px;
+      background: #e5f2e6;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 35px;
+    }
+
+    .upload-area h2 {
+      margin-top: 18px;
+    }
+
+    .upload-area p {
+      color: #737b73;
+      margin-top: 8px;
+    }
+
+    #imageInput {
+      display: none;
+    }
+
+    #preview {
+      width: 100%;
+      max-height: 430px;
+      object-fit: contain;
+      border-radius: 20px;
+      display: none;
+    }
+
+    .preview-container {
+      width: 100%;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    select,
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid #d9dfd9;
+      border-radius: 12px;
+      padding: 13px;
+      outline: none;
+      background: white;
+    }
+
+    select:focus,
+    textarea:focus,
+    input:focus {
+      border-color: #43864d;
+      box-shadow: 0 0 0 4px #e7f3e8;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .full-btn {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .notice {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 15px;
+      background: #fff6db;
+      color: #755500;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* RESULT */
+
+    .result-layout {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 25px;
+      margin-top: 35px;
+    }
+
+    .result-image {
+      width: 100%;
+      max-height: 550px;
+      object-fit: contain;
+      border-radius: 20px;
+      background: #f1f4f1;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      padding: 16px;
+      background: #f3f5f3;
+      border-radius: 15px;
+    }
+
+    .stat small {
+      display: block;
+      color: #737b73;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 20px;
+    }
+
+    .result-section {
+      margin-top: 28px;
+    }
+
+    .result-section h3 {
+      margin-bottom: 12px;
+    }
+
+    .result-section ul {
+      list-style: none;
+    }
+
+    .result-section li {
+      background: #f6f8f6;
+      padding: 13px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .result-section li::before {
+      content: "✓";
+      color: #2d743a;
+      font-weight: bold;
+      margin-right: 9px;
+    }
+
+    /* HISTORY */
+
+    .history-controls {
+      display: grid;
+      grid-template-columns: 1fr 200px 200px;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .history-list {
+      margin-top: 25px;
+      display: grid;
+      gap: 15px;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+      background: white;
+      border: 1px solid #e2e7e2;
+      padding: 20px;
+      border-radius: 18px;
+    }
+
+    .history-item h3 {
+      margin-top: 5px;
+    }
+
+    .history-meta {
+      color: #7a827a;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    /* DASHBOARD */
+
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 35px;
+    }
+
+    .dashboard-number {
+      font-size: 38px;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    .recent {
+      margin-top: 25px;
+    }
+
+    /* LOADING */
+
+    .loading {
+      text-align: center;
+      padding: 60px;
+    }
+
+    .spinner {
+      width: 45px;
+      height: 45px;
+      border: 5px solid #dfe8df;
+      border-top-color: #32783e;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: auto;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* FOOTER */
+
+    footer {
+      background: white;
+      border-top: 1px solid #e2e7e2;
+      padding: 40px 7%;
+      color: #737b73;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* MOBILE */
+
+    @media(max-width: 850px) {
+      .hero-content,
+      .diagnose-layout,
+      .result-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .history-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width: 600px) {
+      .navbar {
+        padding: 0 15px;
+      }
+
+      .nav-links {
+        gap: 0;
+      }
+
+      .nav-links button {
+        padding: 8px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 60px 20px;
+      }
+
+      .hero h1 {
+        font-size: 43px;
+      }
+
+      .container {
+        padding: 55px 15px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 30px;
+      }
+
+      .history-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- NAVBAR -->
+
+  <nav class="navbar">
+    <div class="logo">
+      <div class="logo-icon">🌱</div>
+      CropCare AI
+    </div>
+
+    <div class="nav-links">
+      <button onclick="showPage('home')" class="active" id="nav-home">Home</button>
+      <button onclick="showPage('diagnose')" id="nav-diagnose">Diagnose</button>
+      <button onclick="showPage('dashboard')" id="nav-dashboard">Dashboard</button>
+      <button onclick="showPage('history')" id="nav-history">History</button>
+    </div>
+  </nav>
+
+
+  <!-- HOME -->
+
+  <section id="home" class="page active">
+
+    <div class="hero">
+
+      <div class="hero-content">
+
+        <div>
+          <div class="badge badge-green" style="background:rgba(255,255,255,.12);color:white;">
+            🌾 AI-powered crop health assistant
+          </div>
+
+          <h1>Understand crop problems from a photo.</h1>
+
+          <p>
+            Upload a clear crop image and get an AI-assisted screening
+            with symptoms, possible causes, practical actions and
+            prevention guidance.
+          </p>
+
+          <div class="hero-buttons">
+            <button class="btn btn-primary" onclick="showPage('diagnose')">
+              Diagnose My Crop →
+            </button>
+
+            <button class="btn btn-secondary" onclick="showPage('history')">
+              View History
+            </button>
+          </div>
+        </div>
+
+        <div class="preview-card">
+
+          <div class="status-row">
+            <strong>AI SCREENING</strong>
+            <span class="badge badge-yellow">Possible disease</span>
+          </div>
+
+          <div class="plant-image">
+            🌿
+          </div>
+
+          <h2>Example crop analysis</h2>
+
+          <p style="color:#687168;margin-top:7px;">
+            AI identifies visible symptoms and provides
+            practical agricultural guidance.
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <small>Confidence</small>
+              <strong>82%</strong>
+            </div>
+
+            <div class="stat">
+              <small>Severity</small>
+              <strong>Moderate</strong>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="container">
+
+      <span class="eyebrow">Simple workflow</span>
+
+      <h2 class="section-title">
+        Three steps from photo to guidance.
+      </h2>
+
+      <div class="features">
+
+        <div class="card">
+          <div class="feature-icon">📷</div>
+          <h3>Upload a photo</h3>
+          <p>
+            Take or select a clear photograph showing
+            the affected part of your crop.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="feature-icon">🤖</div>
+          <h3>AI analysis</h3>
+          <p>
+            AI analyzes the image and produces a structured
+            crop-health screening.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="feature-icon">🧭</div>
+          <h3>Understand the issue</h3>
+          <p>
+            Review symptoms, possible causes and
+            recommended next steps.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Prevent future problems</h3>
+          <p>
+            Get practical prevention and crop-care
+            suggestions.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- DIAGNOSE -->
+
+  <section id="diagnose" class="page">
+
+    <div class="container">
+
+      <span class="eyebrow">Crop diagnosis</span>
+
+      <h1 class="section-title">
+        Upload a clear photo of your crop.
+      </h1>
+
+      <p class="section-subtitle">
+        For better results, use good lighting and keep
+        the affected area in focus.
+      </p>
+
+
+      <div class="diagnose-layout">
+
+        <div class="card">
+
+          <div class="upload-area" id="uploadArea">
+
+            <div class="upload-icon">📷</div>
+
+            <h2>Upload crop image</h2>
+
+            <p>
+              Drag and drop or click to select
+            </p>
+
+            <p style="font-size:12px;color:#999;">
+              JPEG, PNG or WEBP · Max 8 MB
+            </p>
+
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/jpeg,image/png,image/webp"
+            />
+
+            <button
+              class="btn btn-primary"
+              style="margin-top:20px;"
+              onclick="document.getElementById('imageInput').click()"
+            >
+              Choose Image
+            </button>
+
+          </div>
+
+          <div class="preview-container" id="previewContainer">
+            <img id="preview" alt="Selected crop image" />
+
+            <div style="display:flex;gap:10px;margin-top:15px;">
+              <button
+                class="btn btn-secondary"
+                onclick="document.getElementById('imageInput').click()"
+              >
+                Replace
+              </button>
+
+              <button
+                class="btn btn-secondary"
+                onclick="removeImage()"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="form-group">
+
+            <label>Crop type</label>
+
+            <select id="cropType">
+
+              <option value="">
+                Let AI identify it
+              </option>
+
+              <option>Rice</option>
+              <option>Wheat</option>
+              <option>Maize</option>
+              <option>Tomato</option>
+              <option>Potato</option>
+              <option>Cotton</option>
+              <option>Chilli</option>
+              <option>Groundnut</option>
+              <option>Sugarcane</option>
+              <option>Mango</option>
+              <option>Banana</option>
+              <option>Other</option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Additional information
+            </label>
+
+            <textarea
+              id="notes"
+              placeholder="Example: yellow spots appeared on the leaves after recent rain..."
+            ></textarea>
+
+          </div>
+
+
+          <button
+            class="btn btn-primary full-btn"
+            onclick="analyzeCrop()"
+            id="analyzeButton"
+          >
+            Analyze Crop →
+          </button>
+
+
+          <div class="notice">
+            <strong>Important:</strong>
+            AI analysis is informational and may be inaccurate.
+            For serious crop problems, confirm the issue with
+            a qualified agricultural professional.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- RESULT -->
+
+  <section id="result" class="page">
+
+    <div class="container">
+
+      <span class="eyebrow">Diagnosis result</span>
+
+      <h1 class="section-title" id="resultDisease">
+        Possible Crop Disease
+      </h1>
+
+      <p class="section-subtitle" id="resultCrop">
+        Crop
+      </p>
+
+
+      <div class="result-layout">
+
+        <div class="card">
+
+          <img
+            id="resultImage"
+            class="result-image"
+            alt="Analyzed crop"
+          />
+
+          <div class="stats">
+
+            <div class="stat">
+              <small>Confidence</small>
+              <strong id="resultConfidence">82%</strong>
+            </div>
+
+            <div class="stat">
+              <small>Image quality</small>
+              <strong id="resultQuality">Good</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="status-row">
+
+            <div>
+              <span class="badge badge-yellow" id="resultStatus">
+                Possible disease
+              </span>
+            </div>
+
+            <span class="badge badge-yellow" id="resultSeverity">
+              Moderate
+            </span>
+
+          </div>
+
+
+          <div class="result-section">
+
+            <h3>Visible symptoms</h3>
+
+            <ul id="symptoms"></ul>
+
+          </div>
+
+
+          <div class="result-section">
+
+            <h3>Possible causes</h3>
+
+            <ul id="causes"></ul>
+
+          </div>
+
+
+          <div class="result-section">
+
+            <h3>Recommended actions</h3>
+
+            <ul id="actions"></ul>
+
+          </div>
+
+
+          <div class="result-section">
+
+            <h3>Prevention tips</h3>
+
+            <ul id="prevention"></ul>
+
+          </div>
+
+
+          <div class="notice">
+            <strong>AI disclaimer:</strong>
+            This is an AI-assisted visual screening and not
+            a laboratory-confirmed diagnosis. Consider professional
+            agricultural advice for important crop decisions.
+          </div>
+
+
+          <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+
+            <button
+              class="btn btn-primary"
+              onclick="showPage('diagnose')"
+            >
+              Diagnose Another Crop
+            </button>
+
+            <button
+              class="btn btn-secondary"
+              onclick="showPage('history')"
+            >
+              View History
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- HISTORY -->
+
+  <section id="history" class="page">
+
+    <div class="container">
+
+      <span class="eyebrow">Your records</span>
+
+      <h1 class="section-title">
+        Diagnosis history
+      </h1>
+
+
+      <div class="history-controls">
+
+        <input
+          type="text"
+          id="historySearch"
+          placeholder="Search crop or disease..."
+          oninput="renderHistory()"
+        />
+
+        <select id="historyStatus" onchange="renderHistory()">
+
+          <option value="all">All statuses</option>
+          <option value="possible">Possible disease</option>
+          <option value="healthy">Healthy-looking</option>
+          <option value="uncertain">Uncertain</option>
+
+        </select>
+
+        <select id="historySeverity" onchange="renderHistory()">
+
+          <option value="all">All severity</option>
+          <option value="low">Low</option>
+          <option value="moderate">Moderate</option>
+          <option value="high">High</option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        id="historyList"
+        class="history-list"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- DASHBOARD -->
+
+  <section id="dashboard" class="page">
+
+    <div class="container">
+
+      <span class="eyebrow">Overview</span>
+
+      <h1 class="section-title">
+        Crop diagnosis dashboard
+      </h1>
+
+
+      <div class="dashboard-stats">
+
+        <div class="card">
+
+          <span style="color:#727a72;">
+            Total diagnoses
+          </span>
+
+          <div
+            class="dashboard-number"
+            id="totalDiagnoses"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <span style="color:#727a72;">
+            Uncertain results
+          </span>
+
+          <div
+            class="dashboard-number"
+            id="uncertainDiagnoses"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <span style="color:#727a72;">
+            Most diagnosed crop
+          </span>
+
+          <div
+            class="dashboard-number"
+            style="font-size:25px;"
+            id="commonCrop"
+          >
+            —
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="card recent">
+
+        <h2>
+          Recent diagnoses
+        </h2>
+
+        <div id="recentList"></div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <footer>
+
+    <strong style="color:#344038;">
+      🌱 CropCare AI
+    </strong>
+
+    <br />
+
+    AI-assisted crop image screening for educational
+    and agricultural-support purposes.
+
+    <br />
+
+    Visual AI analysis is not a laboratory-confirmed diagnosis.
+
+  </footer>
+
+</div>
+
+
+<script>
+
+  /*
+   * ================================================
+   * CROPCARE AI FRONTEND PROTOTYPE
+   * ================================================
+   *
+   * This version uses MOCK AI data.
+   *
+   * Later:
+   *
+   * analyzeCrop()
+   *
+   * can send the image to:
+   *
+   * POST /api/diagnose
+   *
+   * and receive the real Gemini result.
+   */
+
+
+  let selectedFile = null;
+
+  let diagnosisHistory =
+    JSON.parse(localStorage.getItem("cropHistory") || "[]");
+
+
+  /* NAVIGATION */
+
+  function showPage(page) {
+
+    document.querySelectorAll(".page")
+      .forEach(p => p.classList.remove("active"));
+
+    const target =
+      document.getElementById(page);
+
+    if (target) {
+      target.classList.add("active");
+    }
+
+
+    document.querySelectorAll(".nav-links button")
+      .forEach(btn => btn.classList.remove("active"));
+
+    const nav =
+      document.getElementById("nav-" + page);
+
+    if (nav) {
+      nav.classList.add("active");
+    }
+
+
+    if (page === "history") {
+      renderHistory();
+    }
+
+    if (page === "dashboard") {
+      renderDashboard();
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  /* IMAGE UPLOAD */
+
+  const imageInput =
+    document.getElementById("imageInput");
+
+  imageInput.addEventListener("change", function() {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    if (
+      ![
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ].includes(file.type)
+    ) {
+
+      alert(
+        "Please select a JPEG, PNG or WEBP image."
+      );
+
+      return;
+    }
+
+
+    if (file.size > 8 * 1024 * 1024) {
+
+      alert(
+        "Image must be smaller than 8 MB."
+      );
+
+      return;
+    }
+
+
+    selectedFile = file;
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload = function(e) {
+
+      const preview =
+        document.getElementById("preview");
+
+      preview.src =
+        e.target.result;
+
+      preview.style.display =
+        "block";
+
+      document.getElementById("uploadArea")
+        .style.display = "none";
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+  });
+
+
+  function removeImage() {
+
+    selectedFile = null;
+
+    imageInput.value = "";
+
+    document.getElementById("preview")
+      .style.display = "none";
+
+    document.getElementById("uploadArea")
+      .style.display = "flex";
+  }
+
+
+  /* DRAG & DROP */
+
+  const uploadArea =
+    document.getElementById("uploadArea");
+
+
+  uploadArea.addEventListener(
+    "dragover",
+    function(e) {
+
+      e.preventDefault();
+
+      uploadArea.style.borderColor =
+        "#32783e";
+
+      uploadArea.style.background =
+        "#eef7ef";
+
+    }
+  );
+
+
+  uploadArea.addEventListener(
+    "dragleave",
+    function() {
+
+      uploadArea.style.borderColor =
+        "#cbd7cb";
+
+      uploadArea.style.background =
+        "#fafcf9";
+
+    }
+  );
+
+
+  uploadArea.addEventListener(
+    "drop",
+    function(e) {
+
+      e.preventDefault();
+
+      const file =
+        e.dataTransfer.files[0];
+
+      if (!file) return;
+
+      imageInput.files =
+        e.dataTransfer.files;
+
+      imageInput.dispatchEvent(
+        new Event("change")
+      );
+
+    }
+  );
+
+
+  /* MOCK AI ANALYSIS */
+
+  async function analyzeCrop() {
+
+    if (!selectedFile) {
+
+      alert(
+        "Please upload a crop image first."
+      );
+
+      return;
+    }
+
+
+    const button =
+      document.getElementById(
+        "analyzeButton"
+      );
+
+
+    button.disabled = true;
+
+    button.innerHTML =
+      "🤖 Analyzing crop...";
+
+
+    /*
+     * Simulate AI processing.
+     */
+
+    await new Promise(
+      resolve =>
+        setTimeout(resolve, 1800)
+    );
+
+
+    const crop =
+      document.getElementById(
+        "cropType"
+      ).value || "Tomato";
+
+
+    const notes =
+      document.getElementById(
+        "notes"
+      ).value;
+
+
+    /*
+     * MOCK RESULT
+     *
+     * Replace this section later
+     * with a fetch("/api/diagnose")
+     * request to your Express backend.
+     */
+
+    const result = {
+
+      cropName: crop,
+
+      diseaseName:
+        "Possible Early Blight",
+
+      diagnosisStatus:
+        "possible_disease",
+
+      confidence: 82,
+
+      severity:
+        "moderate",
+
+      imageQuality:
+        "good",
+
+      symptoms: [
+
+        "Dark spots are visible on affected leaves.",
+
+        "Some areas appear to show yellowing around the spots.",
+
+        "The affected leaf tissue appears less healthy than surrounding tissue."
+
+      ],
+
+      causes: [
+
+        "The visual pattern can be associated with fungal leaf diseases.",
+
+        "High humidity and prolonged leaf wetness can increase disease risk.",
+
+        "Crop stress and poor airflow may contribute to disease development."
+
+      ],
+
+      actions: [
+
+        "Remove severely affected plant material where practical.",
+
+        "Avoid unnecessary overhead watering and improve airflow around plants.",
+
+        "Monitor nearby plants for similar symptoms.",
+
+        "For chemical treatment decisions, follow local agricultural guidance and product labels."
+
+      ],
+
+      prevention: [
+
+        "Keep foliage as dry as practical.",
+
+        "Maintain appropriate spacing and airflow.",
+
+        "Remove infected plant debris appropriately.",
+
+        "Monitor crops regularly for early symptoms."
+
+      ],
+
+      notes:
+        notes || "The image provides enough visible information for an initial AI-assisted screening."
+
+    };
+
+
+    /*
+     * Save image locally in browser storage
+     * for this prototype.
+     */
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload = function(e) {
+
+      result.image =
+        e.target.result;
+
+      result.id =
+        Date.now().toString();
+
+      result.createdAt =
+        new Date().toISOString();
+
+
+      diagnosisHistory.unshift(result);
+
+
+      localStorage.setItem(
+        "cropHistory",
+        JSON.stringify(
+          diagnosisHistory
+        )
+      );
+
+
+      displayResult(result);
+
+      button.disabled = false;
+
+      button.innerHTML =
+        "Analyze Crop →";
+
+      showPage("result");
+
+    };
+
+
+    reader.readAsDataURL(
+      selectedFile
+    );
+
+  }
+
+
+  /* DISPLAY RESULT */
+
+  function displayResult(result) {
+
+    document.getElementById(
+      "resultDisease"
+    ).textContent =
+      result.diseaseName;
+
+
+    document.getElementById(
+      "resultCrop"
+    ).textContent =
+      result.cropName;
+
+
+    document.getElementById(
+      "resultImage"
+    ).src =
+      result.image;
+
+
+    document.getElementById(
+      "resultConfidence"
+    ).textContent =
+      result.confidence + "%";
+
+
+    document.getElementById(
+      "resultQuality"
+    ).textContent =
+      capitalize(result.imageQuality);
+
+
+    document.getElementById(
+      "resultStatus"
+    ).textContent =
+      "Possible disease";
+
+
+    document.getElementById(
+      "resultSeverity"
+    ).textContent =
+      capitalize(result.severity);
+
+
+    fillList(
+      "symptoms",
+      result.symptoms
+    );
+
+
+    fillList(
+      "causes",
+      result.causes
+    );
+
+
+    fillList(
+      "actions",
+      result.actions
+    );
+
+
+    fillList(
+      "prevention",
+      result.prevention
+    );
+
+  }
+
+
+  function fillList(
+    id,
+    items
+  ) {
+
+    const list =
+      document.getElementById(id);
+
+    list.innerHTML = "";
+
+    items.forEach(item => {
+
+      const li =
+        document.createElement("li");
+
+      li.textContent =
+        item;
+
+      list.appendChild(li);
+
+    });
+
+  }
+
+
+  function capitalize(text) {
+
+    if (!text) return "";
+
+    return text.charAt(0).toUpperCase()
+      + text.slice(1);
+
+  }
+
+
+  /* HISTORY */
+
+  function renderHistory() {
+
+    const list =
+      document.getElementById(
+        "historyList"
+      );
+
+
+    const search =
+      document.getElementById(
+        "historySearch"
+      ).value
+      .toLowerCase();
+
+
+    const status =
+      document.getElementById(
+        "historyStatus"
+      ).value;
+
+
+    const severity =
+      document.getElementById(
+        "historySeverity"
+      ).value;
+
+
+    let filtered =
+      diagnosisHistory.filter(
+        item => {
+
+          const matchesSearch =
+            item.cropName
+              .toLowerCase()
+              .includes(search)
+            ||
+            item.diseaseName
+              .toLowerCase()
+              .includes(search);
+
+
+          const matchesStatus =
+            status === "all"
+            ||
+            (
+              status === "possible"
+              &&
+              item.diagnosisStatus
+                === "possible_disease"
+            )
+            ||
+            (
+              status === "healthy"
+              &&
+              item.diagnosisStatus
+                === "healthy"
+            )
+            ||
+            (
+              status === "uncertain"
+              &&
+              item.diagnosisStatus
+                === "uncertain"
+            );
+
+
+          const matchesSeverity =
+            severity === "all"
+            ||
+            item.severity === severity;
+
+
+          return (
+            matchesSearch
+            &&
+            matchesStatus
+            &&
+            matchesSeverity
+          );
+
+        }
+      );
+
+
+    if (filtered.length === 0) {
+
+      list.innerHTML = `
+
+        <div class="card" style="text-align:center;">
+
+          <div style="font-size:50px;">
+            🌱
+          </div>
+
+          <h2 style="margin-top:15px;">
+            No diagnoses found
+          </h2>
+
+          <p style="color:#737b73;margin-top:7px;">
+            Start by uploading a crop photo.
+          </p>
+
+          <button
+            class="btn btn-primary"
+            style="margin-top:18px;"
+            onclick="showPage('diagnose')"
+          >
+            Diagnose a Crop
+          </button>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+
+    list.innerHTML =
+      filtered.map(item => `
+
+        <div
+          class="history-item"
+          onclick="openHistory('${item.id}')"
+          style="cursor:pointer;"
+        >
+
+          <div>
+
+            <small style="color:#737b73;">
+              ${item.cropName}
+            </small>
+
+            <h3>
+              ${item.diseaseName}
+            </h3>
+
+            <div class="history-meta">
+              ${new Date(item.createdAt).toLocaleString()}
+            </div>
+
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+
+            <span class="badge badge-yellow">
+              ${item.confidence}%
+            </span>
+
+            <span class="badge badge-gray">
+              ${capitalize(item.severity)}
+            </span>
+
+          </div>
+
+        </div>
+
+      `).join("");
+
+  }
+
+
+  function openHistory(id) {
+
+    const item =
+      diagnosisHistory.find(
+        x => x.id === id
+      );
+
+    if (!item) return;
+
+    displayResult(item);
+
+    showPage("result");
+
+  }
+
+
+  /* DASHBOARD */
+
+  function renderDashboard() {
+
+    document.getElementById(
+      "totalDiagnoses"
+    ).textContent =
+      diagnosisHistory.length;
+
+
+    const uncertain =
+      diagnosisHistory.filter(
+        item =>
+          item.diagnosisStatus
+            === "uncertain"
+      ).length;
+
+
+    document.getElementById(
+      "uncertainDiagnoses"
+    ).textContent =
+      uncertain;
+
+
+    if (diagnosisHistory.length === 0) {
+
+      document.getElementById(
+        "commonCrop"
+      ).textContent =
+        "—";
+
+      document.getElementById(
+        "recentList"
+      ).innerHTML = `
+
+        <div style="
+          text-align:center;
+          padding:40px;
+          color:#737b73;
+        ">
+
+          <div style="font-size:45px;">
+            📊
+          </div>
+
+          <h3 style="
+            color:#344038;
+            margin-top:12px;
+          ">
+            Your dashboard is ready
+          </h3>
+
+          <p style="margin-top:7px;">
+            Complete your first diagnosis
+            to see statistics here.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+
+    /*
+     * Find most frequent crop.
+     */
+
+    const counts = {};
+
+    diagnosisHistory.forEach(
+      item => {
+
+        counts[item.cropName] =
+          (counts[item.cropName] || 0)
+          + 1;
+
+      }
+    );
+
+
+    const common =
+      Object.entries(counts)
+        .sort(
+          (a,b) => b[1] - a[1]
+        )[0][0];
+
+
+    document.getElementById(
+      "commonCrop"
+    ).textContent =
+      common;
+
+
+    const recent =
+      diagnosisHistory.slice(0,5);
+
+
+    document.getElementById(
+      "recentList"
+    ).innerHTML =
+      recent.map(item => `
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:15px;
+          padding:17px 0;
+          border-bottom:1px solid #edf0ed;
+          cursor:pointer;
+        "
+        onclick="openHistory('${item.id}')"
+        >
+
+          <div>
+
+            <strong>
+              ${item.cropName}
+            </strong>
+
+            <div style="
+              color:#737b73;
+              font-size:13px;
+              margin-top:4px;
+            ">
+              ${item.diseaseName}
+            </div>
+
+          </div>
+
+          <span class="badge badge-yellow">
+            ${item.confidence}%
+          </span>
+
+        </div>
+
+      `).join("");
+
+  }
+
+
+  /*
+   * Initial dashboard/history render.
+   */
+
+  renderHistory();
+
+</script>
+
+</body>
+</html>
+```
